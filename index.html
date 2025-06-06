@@ -1,1 +1,1727 @@
-hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Swift Mastery Hub</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --accent-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --success-gradient: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 118, 117, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(248, 177, 149, 0.3) 0%, transparent 50%);
+            animation: backgroundShift 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 30px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-size: 0.9rem;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .progress-ring {
+            width: 50px;
+            height: 50px;
+            position: relative;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 3;
+        }
+
+        .progress-ring-fill {
+            fill: none;
+            stroke: #4ecdc4;
+            stroke-width: 3;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.5s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 30px 50px;
+        }
+
+        /* Header Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #a8edea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(15px);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #4ecdc4;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Phase Timeline */
+        .timeline {
+            position: relative;
+            margin: 60px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #4ecdc4, #44a08d, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .phase {
+            position: relative;
+            margin: 80px 0;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .phase:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .phase-number {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.3rem;
+            box-shadow: var(--shadow-light);
+            border: 3px solid white;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .phase-header:hover .phase-number {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .phase-info {
+            margin-left: 30px;
+            flex: 1;
+        }
+
+        .phase-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .phase-duration {
+            background: var(--glass-bg);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            border: 1px solid var(--glass-border);
+        }
+
+        .phase-content {
+            margin-left: 90px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .skill-group {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-group::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--secondary-gradient);
+        }
+
+        .skill-group:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .skill-group-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .skill-group-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .priority-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .critical { background: linear-gradient(135deg, #ff4757, #ff3838); color: white; }
+        .high { background: linear-gradient(135deg, #ff6b6b, #ff5252); color: white; }
+        .medium { background: linear-gradient(135deg, #ffa502, #ff9500); color: white; }
+        .bonus { background: linear-gradient(135deg, #26de81, #20bf6b); color: white; }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.05);
+            margin: 10px 0;
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: var(--text-primary);
+            border-left: 4px solid #4ecdc4;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(8px);
+            border-left-color: #26de81;
+        }
+
+        .skill-item.completed {
+            background: rgba(38, 222, 129, 0.1);
+            border-left-color: #26de81;
+            opacity: 0.8;
+        }
+
+        .skill-actions {
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-item:hover .skill-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-primary);
+            padding: 5px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Notes Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        .notes-textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .save-btn {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            float: right;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Projects Section */
+        .projects-section {
+            margin: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 35px;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--accent-gradient);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .project-status {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .project-features {
+            list-style: none;
+        }
+
+        .project-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .project-features li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: #4ecdc4;
+        }
+
+        /* Dashboard Controls */
+        .dashboard-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(15px);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .control-btn.active {
+            background: var(--success-gradient);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 20px 50px;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .phase-content {
+                margin-left: 50px;
+                grid-template-columns: 1fr;
+            }
+            
+            .phase-number {
+                width: 50px;
+                height: 50px;
+                font-size: 1.1rem;
+            }
+            
+            .nav-content {
+                padding: 0 20px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .dashboard-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-gradient);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-gradient);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-heavy);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(78, 205, 196, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(78, 205, 196, 0.6); }
+        }
+
+        .glow {
+            animation: glow 3s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                🍎 iOS Mastery Hub
+            </div>
+            <div class="nav-controls">
+                <button class="nav-btn" onclick="exportProgress()">📊 Export</button>
+                <button class="nav-btn" onclick="importProgress()">📥 Import</button>
+                <button class="nav-btn" onclick="resetProgress()">🔄 Reset</button>
+                <div class="progress-ring">
+                    <svg width="50" height="50">
+                        <circle class="progress-ring-circle" cx="25" cy="25" r="20"></circle>
+                        <circle class="progress-ring-fill" cx="25" cy="25" r="20" 
+                                stroke-dasharray="0 125.6"></circle>
+                    </svg>
+                    <div class="progress-text" id="overallProgress">0%</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Master iOS Development</h1>
+            <p class="hero-subtitle">
+                Your comprehensive roadmap to becoming an expert iOS Swift developer with system-level features and advanced UI/UX
+            </p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalSkills">87</div>
+                    <div class="stat-label">Total Skills</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedSkills">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="studyStreak">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="timeSpent">0h</div>
+                    <div class="stat-label">Study Time</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Controls -->
+        <div class="dashboard-controls">
+            <button class="control-btn active" onclick="showAllPhases()">
+                📚 All Phases
+            </button>
+            <button class="control-btn" onclick="showInProgress()">
+                ⏳ In Progress
+            </button>
+            <button class="control-btn" onclick="showCompleted()">
+                ✅ Completed
+            </button>
+            <button class="control-btn" onclick="showNotes()">
+                📝 My Notes
+            </button>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline" id="timeline">
+            <!-- Phase 1: Foundation -->
+            <div class="phase" data-phase="1">
+                <div class="phase-header" onclick="togglePhase(1)">
+                    <div class="phase-number">1</div>
+                    <div class="phase-info">
+                        <div class="phase-title">Swift Foundation & Core Concepts</div>
+                        <div class="phase-duration">📅 Week 1-2: Foundation Building</div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">🚀 Swift Programming <span class="priority-badge critical">CRITICAL</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="optionals">
+                                <span>Optionals & Optional Chaining</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="closures">
+                                <span>Closures & Higher-Order Functions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="protocols">
+                                <span>Protocols & Extensions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="generics">
+                                <span>Generics & Associated Types</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="arc">
+                                <span>Memory Management (ARC)</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="references">
+                                <span>Weak vs Strong References</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">📱 iOS App Lifecycle <span class="priority-badge critical">CRITICAL</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="app-states">
+                                <span>App States & Transitions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="vc-lifecycle">
+                                <span>View Controller Lifecycle</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="scene-delegate">
+                                <span>Scene Delegate (iOS 13+)</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="background-refresh">
+                                <span>Background App Refresh</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="state-preservation">
+                                <span>State Preservation</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="memory-warnings">
+                                <span>Memory Warnings</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2: UI & Architecture -->
+            <div class="phase" data-phase="2">
+                <div class="phase-header" onclick="togglePhase(2)">
+                    <div class="phase-number">2</div>
+                    <div class="phase-info">
+                        <div class="phase-title">UI Development & Architecture Patterns</div>
+                        <div class="phase-duration">📅 Week 3-4: UI & Architecture Mastery</div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">🎨 UIKit Mastery <span class="priority-badge high">HIGH</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="uitableview">
+                                <span>UITableView & Custom Cells</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="uicollectionview">
+                                <span>UICollectionView Layouts</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="autolayout">
+                                <span>Auto Layout Programmatically</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="stackviews">
+                                <span>Stack Views & Constraints</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="delegation">
+                                <span>Delegation Pattern</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="target-action">
+                                <span>Target-Action Pattern</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">🏗️ Architecture Patterns <span class="priority-badge high">HIGH</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="mvvm">
+                                <span>MVVM Implementation</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="viper">
+                                <span>VIPER Architecture</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="clean-architecture">
+                                <span>Clean Architecture</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="dependency-injection">
+                                <span>Dependency Injection</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="coordinator">
+                                <span>Coordinator Pattern</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="observer">
+                                <span>Observer Pattern</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 3: Data & Networking -->
+            <div class="phase" data-phase="3">
+                <div class="phase-header" onclick="togglePhase(3)">
+                    <div class="phase-number">3</div>
+                    <div class="phase-info">
+                        <div class="phase-title">Data Management & Networking</div>
+                        <div class="phase-duration">📅 Week 3-4: Data & API Integration</div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">💾 Data Persistence <span class="priority-badge high">HIGH</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="userdefaults">
+                                <span>UserDefaults for Simple Data</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="coredata">
+                                <span>Core Data Stack Setup</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="keychain">
+                                <span>Keychain for Secure Storage</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="filesystem">
+                                <span>File System Operations</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="data-migration">
+                                <span>Data Migration Strategies</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="sqlite">
+                                <span>SQLite Integration</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">🌐 Networking & APIs <span class="priority-badge high">HIGH</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="urlsession">
+                                <span>URLSession & HTTP Methods</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="codable">
+                                <span>Codable JSON Parsing</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="oauth">
+                                <span>OAuth & JWT Authentication</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="error-handling">
+                                <span>Error Handling & Retry Logic</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="network-monitoring">
+                                <span>Network Monitoring</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="restful-api">
+                                <span>RESTful API Integration</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 4: System Level -->
+            <div class="phase" data-phase="4">
+                <div class="phase-header" onclick="togglePhase(4)">
+                    <div class="phase-number">4</div>
+                    <div class="phase-info">
+                        <div class="phase-title">System-Level Features & Permissions</div>
+                        <div class="phase-duration">📅 Week 5-6: Advanced System Integration</div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">🔐 Device Permissions <span class="priority-badge critical">CRITICAL</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="camera-permissions">
+                                <span>Camera & Photo Library Access</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="microphone-permissions">
+                                <span>Microphone Permissions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="location-services">
+                                <span>Location Services</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="accessibility-permissions">
+                                <span>Accessibility Permissions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="screen-recording-permissions">
+                                <span>Screen Recording Permissions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="info-plist">
+                                <span>Info.plist Configuration</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">🔧 App Extensions <span class="priority-badge critical">CRITICAL</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="share-extensions">
+                                <span>Share Extensions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="widget-extensions">
+                                <span>Today Widget Extensions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="notification-extensions">
+                                <span>Notification Extensions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="extension-data-sharing">
+                                <span>App-Extension Data Sharing</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="background-extensions">
+                                <span>Background App Extensions</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="extension-lifecycle">
+                                <span>Extension Lifecycle</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 5: Advanced Features -->
+            <div class="phase" data-phase="5">
+                <div class="phase-header" onclick="togglePhase(5)">
+                    <div class="phase-number">5</div>
+                    <div class="phase-info">
+                        <div class="phase-title">Screen Monitoring & Advanced Features</div>
+                        <div class="phase-duration">📅 Week 5-6: Specialized System Features</div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">📺 Screen Monitoring <span class="priority-badge critical">JOB-SPECIFIC</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="replaykit">
+                                <span>ReplayKit Framework</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="screen-recording-api">
+                                <span>Screen Recording API</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="accessibility-screen-access">
+                                <span>Accessibility Screen Access</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="background-monitoring">
+                                <span>Background Monitoring</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="user-blocking">
+                                <span>User Blocking at OS Level</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="privacy-compliance">
+                                <span>Privacy Compliance</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">⚡ Concurrency & Performance <span class="priority-badge medium">MEDIUM</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="gcd">
+                                <span>Grand Central Dispatch (GCD)</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="async-await">
+                                <span>async/await (iOS 15+)</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="combine">
+                                <span>Combine Framework</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="memory-leak-detection">
+                                <span>Memory Leak Detection</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="battery-optimization">
+                                <span>Battery Optimization</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="performance-profiling">
+                                <span>Performance Profiling</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 6: Testing & Deployment -->
+            <div class="phase" data-phase="6">
+                <div class="phase-header" onclick="togglePhase(6)">
+                    <div class="phase-number">6</div>
+                    <div class="phase-info">
+                        <div class="phase-title">Testing & Modern iOS Features</div>
+                        <div class="phase-duration">📅 Week 7: Final Preparation & Interview Prep</div>
+                    </div>
+                </div>
+                <div class="phase-content">
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">🧪 Testing & Debugging <span class="priority-badge medium">MEDIUM</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="xctest">
+                                <span>XCTest Unit Testing</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="xcuitest">
+                                <span>XCUITest UI Testing</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="xcode-debugger">
+                                <span>Xcode Debugger Tools</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="instruments">
+                                <span>Instruments Profiling</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="mock-objects">
+                                <span>Mock Objects & Stubs</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="tdd">
+                                <span>Test-Driven Development</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <div class="skill-group-header">
+                            <h3 class="skill-group-title">🚀 Modern iOS Features <span class="priority-badge bonus">BONUS</span></h3>
+                        </div>
+                        <ul class="skill-list">
+                            <li class="skill-item" data-skill="swiftui">
+                                <span>SwiftUI Basics</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="firebase">
+                                <span>Firebase Integration</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="push-notifications">
+                                <span>Push Notifications</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="app-store-guidelines">
+                                <span>App Store Guidelines</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                            <li class="skill-item" data-skill="ci-cd">
+                                <span>CI/CD Pipeline Setup</span>
+                                <div class="skill-actions">
+                                    <button class="action-btn" onclick="toggleComplete(this)">✓</button>
+                                    <button class="action-btn" onclick="addNote(this)">📝</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="projects-section">
+            <h2 class="section-title">Practice Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">To-Do List App</h3>
+                        <span class="project-status">Beginner</span>
+                    </div>
+                    <ul class="project-features">
+                        <li>Core Data for persistence</li>
+                        <li>UITableView implementation</li>
+                        <li>Basic CRUD operations</li>
+                        <li>Custom UI with Auto Layout</li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Weather App</h3>
+                        <span class="project-status">Intermediate</span>
+                    </div>
+                    <ul class="project-features">
+                        <li>API integration with URLSession</li>
+                        <li>MVVM architecture</li>
+                        <li>Location Services</li>
+                        <li>Dynamic UI updates</li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Screen Recorder</h3>
+                        <span class="project-status">Advanced</span>
+                    </div>
+                    <ul class="project-features">
+                        <li>ReplayKit implementation</li>
+                        <li>Permission handling</li>
+                        <li>Video processing</li>
+                        <li>Share extension</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Modal -->
+        <div class="modal" id="notesModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Skill Notes</h3>
+                    <button class="close-btn" onclick="closeModal()">×</button>
+                </div>
+                <textarea class="notes-textarea" id="notesInput" placeholder="Add your notes here..."></textarea>
+                <button class="save-btn" onclick="saveNote()">Save Note</button>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab pulse" onclick="scrollToTop()">↑</button>
+    </div>
+
+    <script>
+        // Progress tracking
+        let progressData = JSON.parse(localStorage.getItem('progressData')) || {};
+        let notesData = JSON.parse(localStorage.getItem('notesData')) || {};
+        let studyStreak = parseInt(localStorage.getItem('studyStreak')) || 0;
+        let timeSpent = parseInt(localStorage.getItem('timeSpent')) || 0;
+        let lastStudyDate = localStorage.getItem('lastStudyDate') || '';
+
+        // Update progress ring and stats
+        function updateProgress() {
+            const totalSkills = document.querySelectorAll('.skill-item').length;
+            const completedSkills = document.querySelectorAll('.skill-item.completed').length;
+            const progress = (completedSkills / totalSkills) * 100;
+            
+            const progressRing = document.querySelector('.progress-ring-fill');
+            const circumference = 2 * Math.PI * 20;
+            progressRing.style.strokeDasharray = `${(progress / 100) * circumference} ${circumference}`;
+            
+            document.getElementById('overallProgress').textContent = `${Math.round(progress)}%`;
+            document.getElementById('completedSkills').textContent = completedSkills;
+            document.getElementById('totalSkills').textContent = totalSkills;
+            document.getElementById('studyStreak').textContent = studyStreak;
+            document.getElementById('timeSpent').textContent = `${Math.floor(timeSpent / 3600)}h ${Math.floor((timeSpent % 3600) / 60)}m`;
+        }
+
+        // Toggle skill completion
+        function toggleComplete(button) {
+            const skillItem = button.closest('.skill-item');
+            const skillId = skillItem.dataset.skill;
+            skillItem.classList.toggle('completed');
+            progressData[skillId] = skillItem.classList.contains('completed');
+            localStorage.setItem('progressData', JSON.stringify(progressData));
+            updateProgress();
+            updateStudyStreak();
+        }
+
+        // Update study streak
+        function updateStudyStreak() {
+            const today = new Date().toDateString();
+            if (lastStudyDate !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (lastStudyDate === yesterday.toDateString()) {
+                    studyStreak++;
+                } else if (lastStudyDate !== today) {
+                    studyStreak = 1;
+                }
+                lastStudyDate = today;
+                localStorage.setItem('studyStreak', studyStreak);
+                localStorage.setItem('lastStudyDate', today);
+            }
+            timeSpent += 60; // Add 1 minute per interaction
+            localStorage.setItem('timeSpent', timeSpent);
+            updateProgress();
+        }
+
+        // Toggle phase visibility
+        function togglePhase(phaseNumber) {
+            const phase = document.querySelector(`.phase[data-phase="${phaseNumber}"]`);
+            const content = phase.querySelector('.phase-content');
+            content.style.display = content.style.display === 'none' ? 'grid' : 'none';
+        }
+
+        // Dashboard controls
+        function showAllPhases() {
+            document.querySelectorAll('.phase').forEach(phase => phase.style.display = 'block');
+            setActiveButton('showAllPhases');
+        }
+
+        function showInProgress() {
+            document.querySelectorAll('.phase').forEach(phase => {
+                const hasInProgress = phase.querySelector('.skill-item:not(.completed)');
+                phase.style.display = hasInProgress ? 'block' : 'none';
+            });
+            setActiveButton('showInProgress');
+        }
+
+        function showCompleted() {
+            document.querySelectorAll('.phase').forEach(phase => {
+                const hasCompleted = phase.querySelector('.skill-item.completed');
+                phase.style.display = hasCompleted ? 'block' : 'none';
+            });
+            setActiveButton('showCompleted');
+        }
+
+        function showNotes() {
+            const notesList = Object.entries(notesData).map(([skill, note]) => `<li><strong>${skill}:</strong> ${note}</li>`).join('');
+            const modal = document.getElementById('notesModal');
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.innerHTML = `
+                <div class="modal-header">
+                    <h3 class="modal-title">My Notes</h3>
+                    <button class="close-btn" onclick="closeModal()">×</button>
+                </div>
+                <ul>${notesList || '<li>No notes yet.</li>'}</ul>
+            `;
+            modal.classList.add('active');
+        }
+
+        function setActiveButton(funcName) {
+            document.querySelectorAll('.control-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.control-btn[onclick="${funcName}()"]`).classList.add('active');
+        }
+
+        // Notes modal
+        let currentSkill = null;
+        function addNote(button) {
+            currentSkill = button.closest('.skill-item').dataset.skill;
+            const modal = document.getElementById('notesModal');
+            const notesInput = document.getElementById('notesInput');
+            notesInput.value = notesData[currentSkill] || '';
+            modal.classList.add('active');
+        }
+
+        function saveNote() {
+            const notesInput = document.getElementById('notesInput');
+            notesData[currentSkill] = notesInput.value;
+            localStorage.setItem('notesData', JSON.stringify(notesData));
+            closeModal();
+        }
+
+        function closeModal() {
+            document.getElementById('notesModal').classList.remove('active');
+        }
+
+        // Export/Import/Reset progress
+        function exportProgress() {
+            const data = {
+                progress: progressData,
+                notes: notesData,
+                streak: studyStreak,
+                time: timeSpent
+            };
+            const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ios_mastery_progress.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importProgress() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const data = JSON.parse(event.target.result);
+                    progressData = data.progress || {};
+                    notesData = data.notes || {};
+                    studyStreak = data.streak || 0;
+                    timeSpent = data.time || 0;
+                    localStorage.setItem('progressData', JSON.stringify(progressData));
+                    localStorage.setItem('notesData', JSON.stringify(notesData));
+                    localStorage.setItem('studyStreak', studyStreak);
+                    localStorage.setItem('timeSpent', timeSpent);
+                    loadProgress();
+                    updateProgress();
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress?')) {
+                progressData = {};
+                notesData = {};
+                studyStreak = 0;
+                timeSpent = 0;
+                localStorage.clear();
+                document.querySelectorAll('.skill-item').forEach(item => item.classList.remove('completed'));
+                updateProgress();
+            }
+        }
+
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Load saved progress
+        function loadProgress() {
+            document.querySelectorAll('.skill-item').forEach(item => {
+                const skillId = item.dataset.skill;
+                if (progressData[skillId]) {
+                    item.classList.add('completed');
+                }
+            });
+        }
+
+        // Initialize
+        window.onload = () => {
+            loadProgress();
+            updateProgress();
+            // Set default view
+            showAllPhases();
+        };
+    </script>
+</body>
+</html>
